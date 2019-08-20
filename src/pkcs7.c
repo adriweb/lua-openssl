@@ -474,7 +474,8 @@ static int openssl_pkcs7_dataFinal(PKCS7 *p7, BIO *bio)
       goto err;
     if (!EVP_DigestFinal_ex(mdc, md_data, &md_len))
       goto err;
-#if OPENSSL_VERSION_NUMBER < 0x10100000L || defined(LIBRESSL_VERSION_NUMBER)
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
+    || (defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER < 0x2090000fL)
     M_ASN1_OCTET_STRING_set(p7->d.digest->digest, md_data, md_len);
 #else
     ASN1_OCTET_STRING_set(p7->d.digest->digest, md_data, md_len);
